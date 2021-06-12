@@ -1,0 +1,53 @@
+﻿@model IEnumerable<TestMvc.Models.Product>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <div class="col">
+        <h2>Product List</h2>
+        <div class="d-flex justify-content-end mb-1">
+            @Html.ActionLink("Create New", "Create", new { }, new { @class = "btn btn-primary" })
+        </div>
+        <table class="table table-bordered table-striped table-hover">
+
+            <thead class="thead-dark">
+                <tr>
+                    <th>@Html.DisplayNameFor(x => x.ProductName)</th>
+                    <th>@Html.DisplayNameFor(x => x.UnitePrice)</th>
+                    <th>@Html.DisplayNameFor(x => x.Discount)</th>
+                    <th>Save Money</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(x => p.ProductName)</td>
+                        <td>@Html.DisplayFor(x => p.UnitePrice)</td>
+                        <td>@((p.Discount*100).ToString("0.##"))</td>
+                        <td>@((p.UnitePrice*p.Discount).ToString("0.0"+" "+"Tk"))</td>
+                        <td class="d-flex justify-content-center">
+
+                            <a href="@Url.Action("Edit",new {id=p.ProductId})" class="btn btn-outline-info btn-sm"><i class="fa fa-pencil"> Edit</i></a>
+                            &nbsp;
+                            <a href="@Url.Action("Delete",new {p.ProductId})" class="btn btn-danger btn-sm"><i class="fa fa-trash"> Delete</i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-end">
+            <ul class="pagination pagination-sm">
+                @for (int i = 1; i <= ViewBag.TotalPage; i++)
+                {
+                    <li class='page-item @(ViewBag.CurrentPage==i?"active":"")'>
+                        @Html.ActionLink(i.ToString(), "Index", new { page = i }, new { @class = "page-link" })
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
